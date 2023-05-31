@@ -1,8 +1,17 @@
--upgrade score system
+FIX
+-auto guide of homing missile seems off
+-powerup time to live does not work properly (they blink but never exipire)
+-smoke color not correct on homing missiles
+
+UPGRADE
 -updgrade menu with options
+  -add debug option
+  -pause game on menu enter
+  -unpause menu on menu exit if not at new game start
   -maybe even a temporary leaderboard
 -bullet collision upgrade
 -upgrade powerup
--smoke color not correct on homing missiles
 -move asteroids collision check
   -now there are multiple point where we check with asteroid collision(with SAT or with simple circle intersection)
+-upgrade score system
+  -let score update when asteroid destroyed not when hit -> centralize controls
