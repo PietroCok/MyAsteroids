@@ -1,0 +1,107 @@
+:root, html, body, * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  overflow: hidden;
+}
+
+
+header{
+  /* position: absolute; */
+  width: 100%;
+  border-bottom: 1px solid white;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: black;
+  height: 25px;
+}
+
+#life-points{
+  /* position: absolute; */
+  color: white;
+  display: flex;
+  margin: 0 10px;
+  gap: 7px;
+  flex: 1;
+}
+
+.hp{
+  width: 15px;
+  height: 15px;
+  border-radius: 7.5px;
+  background: white;
+}
+
+#fps-counter{
+  z-index: 1000;
+  color: white;
+  background-color: black;
+  border: 1px solid lime;
+  padding: 2px 3px;
+}
+
+#score{
+  z-index: 1000;
+  color: white;
+  background-color: black;
+  /* border: 1px solid lime; */
+  padding: 2px 3px;
+}
+
+#score > .value{
+  min-width: 2ch;
+}
+
+section {
+  display: flex;
+  justify-content: center;
+}
+
+#menu{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(200px, 80%, 400px);
+  /* height: clamp(150px, 60%, 300px); */
+  border: 1px solid white;
+  background-color: black;;
+  color: white;
+
+  padding: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  font-size: 1.5rem;
+}
+
+#start{
+  border: 1px solid white;
+  padding: 1rem;
+  width: 90%;
+  text-align: center;
+  cursor: pointer;
+}
+#start:hover{
+  background-color: rgb(57, 56, 56);
+}
+
+.hidden{
+  display: none !important;
+}
+
+#temp{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: black;
+  color: white;
+}

@@ -1,0 +1,8 @@
+-upgrade score system
+-updgrade menu with options
+  -maybe even a temporary leaderboard
+-bullet collision upgrade
+-upgrade powerup
+-smoke color not correct on homing missiles
+-move asteroids collision check
+  -now there are multiple point where we check with asteroid collision(with SAT or with simple circle intersection)
