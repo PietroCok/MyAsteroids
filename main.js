@@ -271,17 +271,90 @@ class Menu{
     this.container = document.getElementById('menu');
     this.open();
 
-    this.start_btn = document.getElementById('start');
+    // main page
+    this.mainPage = document.createElement('div');
+    this.createMainPage();
+    // setting submenu
+    this.settings_container = document.createElement('div');
+    this.settings = [];
+    this.createSettings();
+    
+    this.pages = [this.mainPage, this.settings];
+  }
+  createMainPage(){
+    this.mainPage.classList.add('menu', 'page');
+    this.start_btn = document.createElement('div');
+    this.start_btn.id = 'start';
+    this.start_btn.classList.add('btn');
+    this.start_btn.textContent = 'Start';
     this.start_btn.onclick = () => {
       this.game.reset(true);
       this.close();
     }
+    this.mainPage.appendChild(this.start_btn);
+
+    this.setting_btn = document.createElement('div');
+    this.setting_btn.id = 'settings',
+    this.setting_btn.textContent = 'Settings';
+    this.setting_btn.classList.add('btn');
+    this.setting_btn.onclick = () => {
+      this.goTo(2);
+    }
+    this.mainPage.appendChild(this.setting_btn);
+
+    this.container.appendChild(this.mainPage);
+  }
+  createSettings(){
+    this.container.appendChild(this.settings_container);
+    this.settings_container.classList.add('hidden');
+    this.settings_container.classList.add('settings');
+    this.settings.push(new Setting(this.game, this, 'FPS', 'checkbox'));
+
+
+    for(let i = 0; i < this.settings.length; i++){
+      this.settings_container.appendChild(this.settings[i].elem);
+    }
+  }
+  goTo(pageNumber){
+    if(pageNumber > this.pages.length-1)
+      return;
+    for(let i = 0; i < this.pages.length; i++){
+      this.pages[i].classList.add('hidden');
+    }
+    this.page[pageNumber].classList.remove('hidden');
   }
   open(){
     this.container.classList.remove('hidden');
   }
   close(){
     this.container.classList.add('hidden');
+  }
+}
+
+class Setting{
+  constructor(game, menu, name, valueType){
+    this.game = game;
+    this.menu = menu;
+
+    this.name = name;
+    this.valueType = valueType
+    this.elem = this.create();
+  }
+  create(){
+    let elem = document.createElement('input');
+    elem.setAttribute('type', this.valueType);
+    elem.setAttribute('ud', this.name);
+    elem.classList.add('setting');
+    elem.onclick = this.changeState;
+
+    let label = document.createElement('label');
+    label.setAttribute('for', this.name);
+    label.textContent = this.name;
+    label.appendChild(elem);
+    return label;
+  }
+  changeState(){
+    this.on = !this.on;
   }
 }
 
