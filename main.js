@@ -26,6 +26,7 @@ class Game{
       if(event.key == 'Shift'){
         if(this.running){
           this.stop();
+          this.menu.open('Resume');
         } else {
           this.start();
         }
@@ -190,6 +191,7 @@ class Game{
       }
       this.oldT = time;
       if(this.deltaT%30 == 0){
+        // update fps counter
         let fps = 0;
         for(let t of this.buffer){
           fps += t;
@@ -197,6 +199,24 @@ class Game{
         fps /= 10;
         fps = Math.round(1/fps*1000)
         document.getElementById('fps-counter').textContent = fps;
+
+
+        // update player speed
+        let speedOmeter = document.getElementById('speed');
+        if(!speedOmeter){
+          speedOmeter = document.createElement('div')
+          speedOmeter.classList.add('speedOmeter');
+          document.body.appendChild(speedOmeter);
+        }
+        speedOmeter.id = 'speed';
+
+        if(this.player){
+          let player = this.player;
+          let speedX = player.speedX,
+              speedY = player.speedY;
+          console.log(player);
+          speedOmeter.textContent = speedX.toFixed(2) + "\n" + speedY.toFixed(2);
+        }
       }
       document.getElementById('fps-counter').classList.remove('hidden');
     } else {
@@ -271,10 +291,10 @@ class Menu{
   constructor(game){
     this.game = game;
     this.container = document.getElementById('menu');
-    this.open();
-
+    
     // main page
     this.mainPage = document.createElement('div');
+    this.start_btn_text = 'Start';
     this.createMainPage();
     // setting submenu
     this.settings_container = document.createElement('div');
@@ -282,15 +302,22 @@ class Menu{
     this.createSettings();
     
     this.pages = [this.mainPage, this.settings_container];
+    this.avoidReset = false;
+
+    this.open();
   }
   createMainPage(){
     this.mainPage.classList.add('menu', 'page');
     this.start_btn = document.createElement('div');
     this.start_btn.id = 'start';
     this.start_btn.classList.add('btn');
-    this.start_btn.textContent = 'Start';
+    this.start_btn.textContent = this.start_btn_text;
     this.start_btn.onclick = () => {
-      this.game.reset(true);
+      if(!this.avoidReset){
+        this.game.reset(true);
+      } else {
+        this.game.start();
+      }
       this.close();
     }
     this.mainPage.appendChild(this.start_btn);
@@ -312,7 +339,7 @@ class Menu{
     this.settings_container.classList.add('settings', 'page');
 
     this.settings = {
-      FPS: new Setting(this.game, this, 'FPS', 'checkbox', false),
+      FPS: new Setting(this.game, this, 'FPS', 'checkbox', true),
     };
     
     for(let setting of Object.values(this.settings)){
@@ -333,7 +360,14 @@ class Menu{
     }
     this.pages[pageNumber-1].classList.remove('hidden');
   }
-  open(){
+  open(altText){
+    if(altText){
+      this.start_btn.textContent = altText;
+      this.avoidReset = true;
+    } else {
+      this.start_btn.textContent = this.start_btn_text;
+      this.avoidReset = false;
+    }
     this.container.classList.remove('hidden');
   }
   close(){
@@ -385,14 +419,14 @@ class Player{
     this.speedY = 0;
     this.accX = 0;
     this.accY = 0;
-    this.baseAcc = 0.03;
-    this.maxSpeed = 1.5;
+    this.baseAcc = 0.05;
+    this.maxSpeed = 2;
 
     // player pointing direction
     this.angle = 0;
     // player angular speed
     this.aSpeed = 0;
-    this.maxASpeed = 0.05;
+    this.friction = 0.003;
     // angular acceleration
     this.aAcc = 0.05;
 
@@ -521,21 +555,13 @@ class Player{
           break;
       }
     }
-
-    this.speedX += this.accX;
-    if(this.speedX > this.maxSpeed){
-      this.speedX = this.maxSpeed;
-    }
-    if(this.speedX < -this.maxSpeed){
-      this.speedX = -this.maxSpeed
-    }
-    this.speedY += this.accY;
-    if(this.speedY > this.maxSpeed){
-      this.speedY = this.maxSpeed;
-    }
-    if(this.speedY < -this.maxSpeed){
-      this.speedY = -this.maxSpeed
-    }
+    let sign;
+    sign = this.speedX > 0 ? 1 : -1;
+    this.speedX += this.accX - sign*this.friction*this.speedX*this.speedX;
+    sign = this.speedY > 0 ? 1 : -1;
+    this.speedY += this.accY - sign*this.friction*this.speedY*this.speedY;
+  
+    
     this.angle += this.aSpeed;
     this.shapeObj.update(this.aSpeed, this.speedX, this.speedY);
 

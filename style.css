@@ -5,7 +5,7 @@
 }
 
 body{
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 
@@ -130,4 +130,18 @@ section {
   left: 0;
   background-color: black;
   color: white;
+}
+
+
+/* TO BE REMOVED */
+.speedOmeter{
+  background-color: black;
+  color: white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.speedOmeter::before{
+  content: 'Speed(x, y): ';
 }
