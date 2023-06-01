@@ -1,5 +1,4 @@
 const DEBUG = false;
-const FPS = false;
 
 class Game{
   constructor(){
@@ -146,13 +145,13 @@ class Game{
 
     this.asteroids = [];
     this.addAsteroid();
-
-    if(FPS){
-      this.oldT = performance.now();
-      this.buffer = [];
-    } else {
-      document.getElementById('fps-counter').style.display = 'none'
+    
+    if(!this.menu.settings.FPS.value){
+      document.getElementById('fps-counter').classList.add('hidden');
     }
+
+    this.oldT = performance.now();
+    this.buffer = [];
     this.deltaT = 0;
     this.time = 0;
   }
@@ -182,7 +181,7 @@ class Game{
     }
 
 
-    if(FPS){
+    if(this.menu.settings.FPS.value){
       let time = performance.now();
       let updTime = time - this.oldT;
       this.buffer.push(updTime);
@@ -199,6 +198,9 @@ class Game{
         fps = Math.round(1/fps*1000)
         document.getElementById('fps-counter').textContent = fps;
       }
+      document.getElementById('fps-counter').classList.remove('hidden');
+    } else {
+      document.getElementById('fps-counter').classList.add('hidden');
     }
 
     if(this.player){
@@ -276,10 +278,10 @@ class Menu{
     this.createMainPage();
     // setting submenu
     this.settings_container = document.createElement('div');
-    this.settings = [];
+    
     this.createSettings();
     
-    this.pages = [this.mainPage, this.settings];
+    this.pages = [this.mainPage, this.settings_container];
   }
   createMainPage(){
     this.mainPage.classList.add('menu', 'page');
@@ -307,21 +309,29 @@ class Menu{
   createSettings(){
     this.container.appendChild(this.settings_container);
     this.settings_container.classList.add('hidden');
-    this.settings_container.classList.add('settings');
-    this.settings.push(new Setting(this.game, this, 'FPS', 'checkbox'));
+    this.settings_container.classList.add('settings', 'page');
 
-
-    for(let i = 0; i < this.settings.length; i++){
-      this.settings_container.appendChild(this.settings[i].elem);
+    this.settings = {
+      FPS: new Setting(this.game, this, 'FPS', 'checkbox', false),
+    };
+    
+    for(let setting of Object.values(this.settings)){
+      this.settings_container.appendChild(setting.elem);
     }
+
+    let back_btn = document.createElement('div');
+    back_btn.classList.add('btn', 'back', 'small');
+    back_btn.textContent = 'back';
+    this.settings_container.appendChild(back_btn);
+    back_btn.onclick = () => this.goTo(1);
   }
   goTo(pageNumber){
-    if(pageNumber > this.pages.length-1)
+    if(pageNumber > this.pages.length)
       return;
     for(let i = 0; i < this.pages.length; i++){
       this.pages[i].classList.add('hidden');
     }
-    this.page[pageNumber].classList.remove('hidden');
+    this.pages[pageNumber-1].classList.remove('hidden');
   }
   open(){
     this.container.classList.remove('hidden');
@@ -332,29 +342,34 @@ class Menu{
 }
 
 class Setting{
-  constructor(game, menu, name, valueType){
+  constructor(game, menu, name, valueType, initValue){
     this.game = game;
     this.menu = menu;
 
     this.name = name;
-    this.valueType = valueType
+    this.valueType = valueType;
+    this.value = initValue;
     this.elem = this.create();
   }
   create(){
     let elem = document.createElement('input');
     elem.setAttribute('type', this.valueType);
-    elem.setAttribute('ud', this.name);
-    elem.classList.add('setting');
-    elem.onclick = this.changeState;
+    elem.setAttribute('id', this.name);
+    elem.onchange = this.changeState;
 
     let label = document.createElement('label');
     label.setAttribute('for', this.name);
+    label.classList.add('setting', 'small')
     label.textContent = this.name;
     label.appendChild(elem);
     return label;
   }
-  changeState(){
-    this.on = !this.on;
+  changeState(e){
+    let _this = game.menu.settings[Object.keys(game.menu.settings).filter(s => s == e.target.id.toUpperCase())[0]];
+    switch(_this.valueType){
+      case 'checkbox':
+        _this.value = !_this.value;
+    }
   }
 }
 
@@ -808,8 +823,8 @@ class Bullet{
     this.angle = angle;
     this.x = player.shapeObj.centerX + 15*Math.cos(this.angle);
     this.y = player.shapeObj.centerY + 15*Math.sin(this.angle);
-    this.length = 10;
-    this.speed = 4;
+    this.length = 5;
+    this.speed = 10;
     this.TTL = 2;
     this.deltaT = 0;
   }

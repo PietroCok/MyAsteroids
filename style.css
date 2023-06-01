@@ -101,6 +101,15 @@ section {
   border: 1px solid white;
   cursor: pointer;
   text-align: center;
+  margin: 0.3rem;
+}
+
+.setting{
+  display: flex;
+  gap: 0.5rem;
+}
+.setting > input[type='checkbox']{
+  cursor: pointer;
 }
 
 .btn:hover{
@@ -109,6 +118,10 @@ section {
 
 .hidden{
   display: none !important;
+}
+
+.small{
+  font-size: 0.8rem;
 }
 
 #temp{
