@@ -228,6 +228,11 @@ class Game{
       for(let i = this.pickUps.length-1;i >= 0;i--){
         let pickUp = this.pickUps[i];
         pickUp.update();
+
+        // remove if expired
+        if(pickUp.TTL <= 0){
+          this.pickUps.splice(i, 1);
+        }
         
         // collision with player
         // use size as circle to check intersection
@@ -339,7 +344,7 @@ class Menu{
     this.settings_container.classList.add('settings', 'page');
 
     this.settings = {
-      FPS: new Setting(this.game, this, 'FPS', 'checkbox', true),
+      FPS: new Setting(this.game, this, 'FPS', 'checkbox', false),
     };
     
     for(let setting of Object.values(this.settings)){
@@ -388,6 +393,15 @@ class Setting{
   create(){
     let elem = document.createElement('input');
     elem.setAttribute('type', this.valueType);
+    // visual init value
+    switch (this.valueType) {
+      case 'checkbox':
+        elem.checked = this.value
+        break;
+    
+      default:
+        break;
+    }
     elem.setAttribute('id', this.name);
     elem.onchange = this.changeState;
 
