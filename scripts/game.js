@@ -21,13 +21,23 @@ class Game {
                 //console.log(this.inputBuffer);
             }
 
-            if (event.key == 'Shift') {
-                if (this.running) {
-                    this.stop();
-                    this.menu.open('Resume');
+            if (event.key == 'Escape') {
+                if(this.player){
+                    if (this.running) {
+                        this.stop();
+                        this.menu.open('Resume');
+                    } else {
+                        this.menu.close();
+                        this.start();
+                    }
                 } else {
-                    this.start();
+                    if (this.menu.avoidReset) {
+                        this.start();
+                        this.menu.close();
+                    }
+                    // do nothing if game is not started (= player not present)
                 }
+                
             }
         });
 

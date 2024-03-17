@@ -15,6 +15,8 @@ class Menu {
         this.pages = [this.mainPage, this.settings_container];
         this.avoidReset = false;
 
+        this.isopen = false;
+
         this.open();
     }
     createMainPage() {
@@ -71,7 +73,13 @@ class Menu {
         }
         this.pages[pageNumber - 1].classList.remove('hidden');
     }
+    isOpen(){
+        return !!this.isopen;
+    }
     open(altText) {
+        if(this.isOpen())
+            return;
+
         if (altText) {
             this.start_btn.textContent = altText;
             this.avoidReset = true;
@@ -80,9 +88,14 @@ class Menu {
             this.avoidReset = false;
         }
         this.container.classList.remove('hidden');
+        this.isopen = true;
     }
     close() {
+        if(!this.isOpen())
+            return;
+
         this.container.classList.add('hidden');
+        this.isopen = false;
     }
 }
 
