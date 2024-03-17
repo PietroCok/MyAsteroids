@@ -1,7 +1,6 @@
 ### BUGS
 
 - auto guide of homing missile seems off
-- powerup time to live does not work properly sometimes (they blink but never exipire)
 - smoke color not correct on homing missiles
 - unpause with button does not hide menu
 
