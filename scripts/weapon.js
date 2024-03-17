@@ -119,30 +119,32 @@ class HomingMissile extends Bullet {
 
         this.aSpeed = 0;
         if (this.target) {
-            // need to aim for where the object will be
-            let timeInFuture = 1;
-            let futureTargetX = this.target.shapeObj.centerX + (this.target.shapeObj.obj.speedX * timeInFuture * 60);
-            let futureTargetY = this.target.shapeObj.centerY + (this.target.shapeObj.obj.speedY * timeInFuture * 60);
-
-            //this.targetX = this.target.shapeObj.centerX;
-            //this.targetY = this.target.shapeObj.centerY;
-
-            this.targetX = futureTargetX;
-            this.targetY = futureTargetY;
-
-            // rotazione verso l'obiettivo
-            // calcolo segmento che unisce con l'obiettivo
-            let distX = this.targetX - this.shapeObj.centerX;
-            let distY = this.targetY - this.shapeObj.centerY;
-            //let a = Math.atan2(this.targetY, this.targetX);
-            let a = Math.atan2(distY, distX); // angle relative to 0
-            let aShift = a - this.angle;  // angle relative to obj angle
-            if (aShift < 0) {
-                aShift += Math.PI * 2;
-            }
 
             // aggiornamento componenti velocità
             if (this.fuel > 0) {
+                // need to aim for where the object will be
+                let timeInFuture = 1;
+                let futureTargetX = this.target.shapeObj.centerX + (this.target.shapeObj.obj.speedX * timeInFuture * 60);
+                let futureTargetY = this.target.shapeObj.centerY + (this.target.shapeObj.obj.speedY * timeInFuture * 60);
+
+                //this.targetX = this.target.shapeObj.centerX;
+                //this.targetY = this.target.shapeObj.centerY;
+
+                this.targetX = futureTargetX;
+                this.targetY = futureTargetY;
+
+                // rotazione verso l'obiettivo
+                // calcolo segmento che unisce con l'obiettivo
+                let distX = this.targetX - this.shapeObj.centerX;
+                let distY = this.targetY - this.shapeObj.centerY;
+                //let a = Math.atan2(this.targetY, this.targetX);
+                let a = Math.atan2(distY, distX); // angle relative to 0
+                let aShift = a - this.angle;  // angle relative to obj angle
+                if (aShift < 0) {
+                    aShift += Math.PI * 2;
+                }
+
+                this.thruster.activate();
 
                 // rotation
                 if (aShift < Math.PI) {
@@ -152,8 +154,6 @@ class HomingMissile extends Bullet {
                     // rotate left
                     this.aSpeed = -0.05;
                 }
-
-                this.thruster.activate();
 
                 this.accX = this.baseAcc * Math.cos(this.angle);
                 this.accY = this.baseAcc * Math.sin(this.angle);
@@ -192,7 +192,7 @@ class HomingMissile extends Bullet {
                 let distX = asteroid.shapeObj.centerX - this.shapeObj.centerX;
                 let distY = asteroid.shapeObj.centerY - this.shapeObj.centerY;
                 let distR = asteroid.shapeObj.size / 2 + this.explosionDist;
-                if (distX * distX + distY * distY < distR * distR) {
+                if (distX * distX + distY * distY < distR * distR && false) {
                     new SimpleExplosion(this.game, asteroid.shapeObj.centerX, asteroid.shapeObj.centerY);
 
                     this.game.asteroids.splice(i, 1);
@@ -209,8 +209,7 @@ class HomingMissile extends Bullet {
             }
         }
 
-
-
+        
         this.thruster.update();
 
         //this.speedX = 0;
@@ -227,7 +226,7 @@ class HomingMissile extends Bullet {
 
         if (DEBUG) {
             // draw aim point
-            ctx.fillStyle = 'red';
+            ctx.fillStyle = 'lime';
             ctx.beginPath();
             ctx.arc(this.targetX, this.targetY, 5, 0, Math.PI * 2);
             ctx.fill();

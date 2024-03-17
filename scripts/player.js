@@ -202,8 +202,6 @@ class Player {
                 }
             }
         }
-
-
     }
 
     draw(ctx) {
