@@ -60,7 +60,7 @@ class SimpleExplosion extends Explosion {
     }
 }
 
-class HomingMissileExplosion extends Explosion {
+class MissileExplosion extends Explosion {
     constructor(game, x, y) {
         super(game, x, y);
 
@@ -92,6 +92,8 @@ class HomingMissileExplosion extends Explosion {
 
                 this.game.asteroids.splice(i, 1);
                 this.game.updateBiggestAsteroid();
+
+                this.game.increaseScore(10);
 
                 // new level
                 if (this.game.asteroids.length <= 0) {

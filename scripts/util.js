@@ -94,7 +94,7 @@ class Shape {
         this.speedY = speedY;
 
 
-        this.rotatedShape = JSON.parse(JSON.stringify(this.shape));
+        this.rotatedShape = structuredClone(this.shape);
         // center of geometry
         this.centerX = 0;
         for (let point of this.rotatedShape) {

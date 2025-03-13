@@ -29,10 +29,10 @@ class Player {
         this.lastBullet = 0;
         this.lastMissile = 0;
 
-        // homing missiles
-        this.HMissileReady = true;
-        this.HMissileCooldown = 10;
-        this.HMissileCooldownTime = 0;
+        // missiles
+        this.MissileReady = true;
+        this.MissileCooldown = 10;
+        this.MissileCooldownTime = 0;
 
         this.hp = 3;
         this.maxHp = 5;
@@ -139,8 +139,8 @@ class Player {
                     }
                     break;
                 case 'e':
-                    if (performance.now() - this.lastMissile > 600) {
-                        new HomingMissile(this.game, this, this.angle)
+                    if (performance.now() - this.lastMissile > 600 / this.fireRate) {
+                        new Missile(this.game, this, this.angle)
                         this.lastMissile = performance.now();
                     }
                     break;
@@ -281,7 +281,7 @@ class PickUp {
         // increase/decrease on relative type
         //this.increase = Math.random() > 0.5 ? true : false;
         this.deltaT = 0;
-        this.TTL_start = Math.round(Math.random() * 5 + 10);
+        this.TTL_start = Math.round(Math.random() * 5 + 20);
         this.TTL = this.TTL_start;
 
         this.on = true;

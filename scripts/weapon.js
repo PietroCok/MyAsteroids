@@ -49,7 +49,7 @@ class Bullet {
     }
 }
 
-class HomingMissile extends Bullet {
+class Missile extends Bullet {
     constructor(game, player) {
         super(game, player);
 
@@ -65,14 +65,12 @@ class HomingMissile extends Bullet {
         this.baseAcc = 0 //0.5;
         this.maxSpeed = 5;
         this.angle = this.player.angle;
-        this.maxASpeed = 0.02;
-        this.aSpeed = 0;
         this.accX = this.baseAcc * Math.cos(this.angle);
         this.accY = this.baseAcc * Math.sin(this.angle);
 
         this.TTL = 4; // how long before explosion if no collision
-        this.fuel = 3; // how long to sprint forward
-        this.igniteBoostAfter = 1; // let it rotate a bit before ignite booster
+        this.fuel = 3.5; // how long to sprint forward
+        this.igniteBoostAfter = .5; // let it rotate a bit before ignite booster
         this.timeToIgnite = 0;
         this.explosionDist = 30;
 
@@ -91,7 +89,7 @@ class HomingMissile extends Bullet {
 
     explode() {
         this.TTL = 0;
-        new HomingMissileExplosion(this.game, this.shapeObj.centerX, this.shapeObj.centerY);
+        new MissileExplosion(this.game, this.shapeObj.centerX, this.shapeObj.centerY);
     }
 
     update() {
@@ -109,15 +107,13 @@ class HomingMissile extends Bullet {
                 this.explode();
                 return;
             }
-
         }
         // wait before ingnite booster
         this.timeToIgnite++;
         if (this.timeToIgnite / 60 >= this.igniteBoostAfter) {
-            this.baseAcc = 0.3;
+            this.baseAcc = 0.5;
         }
 
-        this.aSpeed = 0;
         if (this.target) {
 
             // aggiornamento componenti velocità
@@ -127,33 +123,10 @@ class HomingMissile extends Bullet {
                 let futureTargetX = this.target.shapeObj.centerX + (this.target.shapeObj.obj.speedX * timeInFuture * 60);
                 let futureTargetY = this.target.shapeObj.centerY + (this.target.shapeObj.obj.speedY * timeInFuture * 60);
 
-                //this.targetX = this.target.shapeObj.centerX;
-                //this.targetY = this.target.shapeObj.centerY;
-
                 this.targetX = futureTargetX;
                 this.targetY = futureTargetY;
 
-                // rotazione verso l'obiettivo
-                // calcolo segmento che unisce con l'obiettivo
-                let distX = this.targetX - this.shapeObj.centerX;
-                let distY = this.targetY - this.shapeObj.centerY;
-                //let a = Math.atan2(this.targetY, this.targetX);
-                let a = Math.atan2(distY, distX); // angle relative to 0
-                let aShift = a - this.angle;  // angle relative to obj angle
-                if (aShift < 0) {
-                    aShift += Math.PI * 2;
-                }
-
                 this.thruster.activate();
-
-                // rotation
-                if (aShift < Math.PI) {
-                    // rotate right
-                    this.aSpeed = 0.05;
-                } else {
-                    // rotate left
-                    this.aSpeed = -0.05;
-                }
 
                 this.accX = this.baseAcc * Math.cos(this.angle);
                 this.accY = this.baseAcc * Math.sin(this.angle);
@@ -172,16 +145,6 @@ class HomingMissile extends Bullet {
                 if (this.speedY < -this.maxSpeed) {
                     this.speedY = -this.maxSpeed
                 }
-
-                this.angle += this.aSpeed;
-
-                // move into fuel check
-                //this.angle += this.aSpeed;
-                if (this.angle >= Math.PI * 2) {
-                    this.angle -= Math.PI * 2;
-                } else if (this.angle < -Math.PI * 2) {
-                    this.angle += Math.PI * 2;
-                }
             }
 
             // check for collisions
@@ -192,12 +155,14 @@ class HomingMissile extends Bullet {
                 let distX = asteroid.shapeObj.centerX - this.shapeObj.centerX;
                 let distY = asteroid.shapeObj.centerY - this.shapeObj.centerY;
                 let distR = asteroid.shapeObj.size / 2 + this.explosionDist;
-                if (distX * distX + distY * distY < distR * distR && false) {
+                if (distX * distX + distY * distY < distR * distR) {
                     new SimpleExplosion(this.game, asteroid.shapeObj.centerX, asteroid.shapeObj.centerY);
-
+                    
                     this.game.asteroids.splice(i, 1);
                     this.game.updateBiggestAsteroid();
-
+                    
+                    this.game.increaseScore(10);
+                    
                     // new level
                     if (this.game.asteroids.length <= 0) {
                         this.game.increaseDifficulty();
@@ -211,10 +176,8 @@ class HomingMissile extends Bullet {
 
         
         this.thruster.update();
-
-        //this.speedX = 0;
-        //this.speedY = 0;
-        this.shapeObj.update(this.aSpeed, this.speedX, this.speedY);
+        
+        this.shapeObj.update(0, this.speedX, this.speedY);
     }
 
     draw(ctx) {
