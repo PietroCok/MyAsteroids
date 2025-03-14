@@ -139,7 +139,7 @@ class Player {
                     }
                     break;
                 case 'e':
-                    if (performance.now() - this.lastMissile > 600 / this.fireRate) {
+                    if (performance.now() - this.lastMissile > 600) {
                         new Missile(this.game, this, this.angle)
                         this.lastMissile = performance.now();
                     }
