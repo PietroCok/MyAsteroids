@@ -22,14 +22,13 @@ class Player {
         this.aAcc = 0.05;
 
         this.fireRate = 1; //projectile/sec
-        this.maxFireRate = 5;
         this.deltaT = 0;
 
         this.bullets = [];
         this.lastBullet = 0;
 
         this.hp = 3;
-        this.maxHp = 5;
+        this.maxHp = 10;
         this.immune = false;
         this.immuneTime = 3;
         this.immuneTimeLeft = 0;
@@ -68,7 +67,7 @@ class Player {
     pickUp(pickup) {
         switch (pickup.text) {
             case 'fireRate':
-                this.fireRate = (this.fireRate + 1) % this.maxFireRate == 0 ? this.maxFireRate : this.fireRate + 1;
+                this.fireRate *= 1.2;
                 break;
             case 'hp':
                 this.hp = (this.hp + 1) % this.maxHp == 0 ? this.maxHp : this.hp + 1;
