@@ -7,6 +7,7 @@ class Explosion {
 
         this.game.explosions.push(this);
         this.end = false;
+        this.deltaT = 0;
     }
     update() {
 
@@ -21,25 +22,35 @@ class SimpleExplosion extends Explosion {
         super(game, x, y);
 
         this.n = n || Math.random() * 5 + 5;
+        this.startTTL = 2 * 60;
+        this.TTL =  this.startTTL;
         this.particles = [];
+
         for (let i = 0; i < this.n; i++) {
             this.particles.push({
                 x: this.x,
                 y: this.y,
-                speedX: (Math.random() * 2 + 2) * (Math.random() > 0.5 ? 1 : -1),
-                speedY: (Math.random() * 2 + 2) * (Math.random() > 0.5 ? 1 : -1),
-                color: 'rgb(' + Math.random() * 255 + ',' + Math.random() * 255 + ',' + Math.random() * 255 + ')'
+                speedX: (Math.random() * 4) * (Math.random() >= 0.5 ? 1 : -1),
+                speedY: (Math.random() * 4) * (Math.random() >= 0.5 ? 1 : -1),
+                color: {
+                    red: Math.random() * 255,
+                    green: Math.random() * 255,
+                    blue: Math.random() * 255,
+                    opacity: 1
+                }
             });
         }
     }
     update() {
+        this.TTL--;
+        
         for (let i = this.particles.length - 1; i >= 0; i--) {
             let particle = this.particles[i];
             particle.x += particle.speedX;
             particle.y += particle.speedY;
+            particle.color.opacity -= this.TTL / this.startTTL / 100;
 
-
-            if (particle.x < 0 || particle.x > this.game.canvas.width || particle.y < 0 || particle.y > this.game.canvas.height) {
+            if (this.TTL <= 0) {
                 this.particles.splice(i, 1);
             }
         }
@@ -51,9 +62,10 @@ class SimpleExplosion extends Explosion {
     }
     draw(ctx) {
         this.particles.forEach(p => {
+            const color = `rgba(${p.color.red}, ${p.color.green}, ${p.color.blue}, ${p.color.opacity})`
             ctx.beginPath();
             ctx.arc(p.x, p.y, 3, 0, Math.PI);
-            ctx.fillStyle = p.color;
+            ctx.fillStyle = color;
             ctx.closePath();
             ctx.fill();
         })
@@ -67,8 +79,6 @@ class MissileExplosion extends Explosion {
         this.radius = 0;
         this.maxRadius = 60;
         this.explosionSpeed = 50;
-
-        this.deltaT = 0;
     }
     update() {
         this.deltaT++;
