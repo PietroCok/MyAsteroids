@@ -266,11 +266,6 @@ class PickUp {
                 color: 'lime'
             },
             {
-                text: 'speed',
-                simbol: 'S',
-                color: 'lightBlue'
-            },
-            {
                 text: 'hp',
                 simbol: 'H',
                 color: 'red'
