@@ -26,15 +26,34 @@ header{
   color: white;
   display: flex;
   margin: 0 10px;
-  gap: 7px;
+  gap: 0.8rem;
   flex: 1;
 }
 
 .hp{
-  width: 15px;
-  height: 15px;
-  border-radius: 7.5px;
+  width: 10px;
+  height: 10px;
   background: white;
+  transform: rotate(45deg);
+  position: relative;
+
+  &::after,
+  &::before{
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: inherit;
+  }
+
+  &::before{
+    transform: translateX(-50%);
+  }
+
+  &::after{
+    transform: translateY(-50%);
+  }
 }
 
 #fps-counter{
