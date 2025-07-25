@@ -74,6 +74,15 @@ class Player {
                 this.game.updateLifePoints();
                 break;
         }
+
+        // show message
+        const element = document.getElementById(pickup.id);
+        if(element && !element.classList.contains('animate')){
+            element.classList.add('animate');            
+            setTimeout(() => {
+                element.classList.remove('animate');
+            }, 5*1000);     
+        }
     }
 
     update() {
@@ -242,11 +251,13 @@ class PickUp {
 
         this.types = [
             {
+                id: 'fire-rate',
                 text: 'fireRate',
                 simbol: 'F',
                 color: 'lime'
             },
-            {
+            { 
+                id: 'hp-up',
                 text: 'hp',
                 simbol: 'H',
                 color: 'red'

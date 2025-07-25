@@ -143,24 +143,29 @@ section {
   font-size: 0.8rem;
 }
 
-#temp{
+.messages .pick-up{
   position: absolute;
-  bottom: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  font-size: large;
+  font-weight: 500;
   background-color: black;
-  color: white;
+  box-shadow: 0 0 20px 10px black;
 }
 
-
-/* TO BE REMOVED */
-.speedOmeter{
-  background-color: black;
-  color: white;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+.messages .pick-up.animate{
+  display: block;
+  transform: translate(-50%, -100px);
+  opacity: 1;
+  transition: all 3s;
 }
 
-.speedOmeter::before{
-  content: 'Speed(x, y): ';
+.color-green{
+  color: lime;
+}
+
+.color-red{
+  color: red;
 }

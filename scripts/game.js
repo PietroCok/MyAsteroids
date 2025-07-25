@@ -158,6 +158,10 @@ class Game {
         this.level++;
         this.asteroidsNumber = 4 + this.level * 2;
         this.addAsteroid();
+        this.spawnPickUp();
+    }
+
+    spawnPickUp(){
         this.pickUps.push(new PickUp(this));
     }
 
