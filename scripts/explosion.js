@@ -101,7 +101,6 @@ class MissileExplosion extends Explosion {
                 new SimpleExplosion(this.game, asteroid.shapeObj.centerX, asteroid.shapeObj.centerY);
 
                 this.game.asteroids.splice(i, 1);
-                this.game.updateBiggestAsteroid();
 
                 this.game.increaseScore(10);
 

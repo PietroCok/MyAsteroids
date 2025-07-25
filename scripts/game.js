@@ -94,22 +94,6 @@ class Game {
             }
         }
 
-        this.updateBiggestAsteroid();
-    }
-
-    updateBiggestAsteroid() {
-        if (this.asteroids.length <= 0) {
-            return;
-        }
-
-        let bigAsteroid = this.asteroids[0];
-        for (let i = 1; i < this.asteroids.length; i++) {
-            if (this.asteroids[i].shapeObj.size > bigAsteroid.shapeObj.size) {
-                bigAsteroid.biggest = false;
-                bigAsteroid = this.asteroids[i];
-            }
-        }
-        bigAsteroid.biggest = true;
     }
 
     updateLifePoints(points) {

@@ -159,12 +159,6 @@ class Shape {
         }
         ctx.closePath();
         ctx.strokeStyle = this.color;
-        if (this.game.player && this.game.player.HMissileReady) {
-            // highlight biggest asteroid
-            if (this.obj.biggest && DEBUG) {
-                ctx.strokeStyle = 'red';
-            }
-        }
         ctx.lineWidth = 2;
         ctx.stroke();
 

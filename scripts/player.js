@@ -27,12 +27,6 @@ class Player {
 
         this.bullets = [];
         this.lastBullet = 0;
-        this.lastMissile = 0;
-
-        // missiles
-        this.MissileReady = true;
-        this.MissileCooldown = 10;
-        this.MissileCooldownTime = 0;
 
         this.hp = 3;
         this.maxHp = 5;
@@ -73,13 +67,6 @@ class Player {
 
     pickUp(pickup) {
         switch (pickup.text) {
-            case 'speed':
-                // increase maxSpeed, acceleration, angular acceleration, max angular speed
-                this.maxSpeed = this.maxSpeed * 1.1 > 3 ? 3 : this.maxSpeed * 1.1;
-                this.baseAcc = this.baseAcc * 1.1 > 0.1 ? 0.1 : this.baseAcc * 1.1;
-                this.aAcc = this.aAcc * 1.1 > 0.2 ? 0.2 : this.aAcc * 1.1;
-                this.maxASpeed = this.maxASpeed * 1.1 > 0.1 ? 0.1 : this.maxASpeed * 1.1;
-                break;
             case 'fireRate':
                 this.fireRate = (this.fireRate + 1) % this.maxFireRate == 0 ? this.maxFireRate : this.fireRate + 1;
                 break;
@@ -139,10 +126,6 @@ class Player {
                     }
                     break;
                 case 'e':
-                    if (performance.now() - this.lastMissile > 600) {
-                        new Missile(this.game, this, this.angle)
-                        this.lastMissile = performance.now();
-                    }
                     break;
             }
         }
@@ -178,7 +161,7 @@ class Player {
 
                     this.game.increaseScore(10);
 
-                    let shinkFactor = 0.75;
+                    const shinkFactor = 0.6;
                     if (ast.shapeObj.size * shinkFactor > this.game.asteroidsMinSize) {
                         // split asteroid when destroyed
                         this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY));
@@ -190,7 +173,6 @@ class Player {
                         //this.game.addAsteroid();
                     }
                     this.game.asteroids.splice(j, 1);
-                    this.game.updateBiggestAsteroid();
 
                     // new level
                     if (this.game.asteroids.length <= 0) {

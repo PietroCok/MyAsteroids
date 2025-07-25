@@ -16,7 +16,6 @@ class Asteroid {
         this.points = [];
         this.generate();
         this.shapeObj = new Shape(this.game, this, this.points, 'white', this.size);
-        this.biggest = false;
     }
     generate() {
         // takes points on a circle
