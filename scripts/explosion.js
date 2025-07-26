@@ -78,12 +78,12 @@ class SimpleExplosion extends Explosion {
 }
 
 class MissileExplosion extends Explosion {
-    constructor(game, x, y) {
+    constructor(game, x, y, radius = 60, explosionSpeed = 50) {
         super(game, x, y);
 
         this.radius = 0;
-        this.maxRadius = 60;
-        this.explosionSpeed = 50;
+        this.maxRadius = radius;
+        this.explosionSpeed = explosionSpeed;
     }
     update() {
         this.deltaT++;

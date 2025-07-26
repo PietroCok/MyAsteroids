@@ -171,6 +171,18 @@ section {
   color: red;
 }
 
+.color-cyan{
+  color: cyan;
+}
+
+.color-orange{
+  color: orange;
+}
+
+.color-purple{
+  color: purple;
+}
+
 .rotate-90{
   transform: rotate(90deg);
 }

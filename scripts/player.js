@@ -66,16 +66,17 @@ class Player {
         }
     }
 
-    immunity(time) {
+    immunity(time, blink = true) {
         if (time) {
             this.immuneTime = time;
         }
         this.immuneTimeLeft = this.immuneTime;
         this.immune = true;
+        this.blinking = blink;
     }
 
-    pickUp(pickup) {
-        switch (pickup.text) {
+    powerUp(powerup) {
+        switch (powerup.text) {
             case 'fireRate':
                 this.fireRate *= 1.2;
                 if(this.fireRate > this.maxFireRate){
@@ -86,10 +87,19 @@ class Player {
                 this.hp = (this.hp + 1) % this.maxHp == 0 ? this.maxHp : this.hp + 1;
                 this.game.updateLifePoints();
                 break;
+            case 'shield':
+                this.immunity(20, false);
+                break;
+            case 'nuke':
+                new MissileExplosion(this.game, this.shapeObj.centerX, this.shapeObj.centerY, 200, 100);
+                break;
+            case 'slow':
+                this.game.slowDownAsteroids(10);
+                break;
         }
 
         // show message
-        const element = document.getElementById(pickup.id);
+        const element = document.getElementById(powerup.id);
         if (element && !element.classList.contains('animate')) {
             element.classList.add('animate');
             setTimeout(() => {
@@ -215,9 +225,11 @@ class Player {
         // if player immune blink (faster as time left decrease)
         if (this.immune) {
             // half second on, half second off
-            let blinkTime = 6 - this.immuneTimeLeft; // state change/second
-            if (this.deltaT % (60 / blinkTime) == 0) {
-                this.on = !this.on;
+            if(this.blinking){
+                let blinkTime = 6 - this.immuneTimeLeft; // state change/second
+                if (this.deltaT % (60 / blinkTime) == 0) {
+                    this.on = !this.on;
+                }
             }
             if (this.on) {
                 this.shapeObj.draw(ctx);
@@ -231,7 +243,7 @@ class Player {
             ctx.arc(this.shapeObj.centerX, this.shapeObj.centerY, this.shapeObj.size * 1.2, 0, 2 * Math.PI);
             ctx.stroke();
             ctx.lineWidth = 2,
-                ctx.globalAlpha = 1;
+            ctx.globalAlpha = 1;
 
         } else {
             this.shapeObj.draw(ctx);
@@ -250,82 +262,5 @@ class Player {
         }
 
 
-    }
-}
-
-
-
-class PickUp {
-    constructor(game) {
-        this.game = game;
-
-        this.size = 15;
-        this.x = Math.random() * (this.game.canvas.width - this.size * 2) + this.size;
-        this.y = Math.random() * (this.game.canvas.height - this.size * 2) + this.size;
-
-        this.types = [
-            {
-                id: 'fire-rate',
-                text: 'fireRate',
-                simbol: 'F',
-                color: 'lime'
-            },
-            {
-                id: 'hp-up',
-                text: 'hp',
-                simbol: 'H',
-                color: 'red'
-            }
-        ]
-
-        let availableTypes = this.types;
-        // remove hp up from pool when player has max hp
-        if (this.game.player?.hp >= this.game.player?.maxHp) {
-            availableTypes = availableTypes.filter(t => t.id != 'hp-up')
-        }
-        // remove firerate up from pool when player has reached max firerate
-        if (this.game.player?.fireRate >= this.game.player?.maxFireRate) {
-            availableTypes = availableTypes.filter(t => t.id != 'fire-rate')
-        }
-
-        if(availableTypes.length == 0){
-            return;
-        }
-
-        this.type = availableTypes[Math.floor(Math.random() * availableTypes.length)];
-        this.deltaT = 0;
-        this.TTL_start = Math.round(Math.random() * 5 + 20);
-        this.TTL = this.TTL_start;
-
-        this.on = true;
-    }
-    update() {
-        this.deltaT++;
-        if (this.deltaT >= 60) {
-            this.deltaT = 0;
-            this.TTL--;
-        }
-
-        if(this.TTL <= 0){
-            delete this;
-        }
-    }
-    draw(ctx) {
-        let blinkTime = 6 - this.TTL; // state change/second
-        if (this.TTL < 5 && this.deltaT % (60 / blinkTime) == 0) {
-            this.on = !this.on;
-        }
-        if (this.on) {
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = this.type.color;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, 12, 0, 2 * Math.PI);
-            ctx.stroke();
-
-            ctx.font = '20px Arial bold';
-            ctx.fillStyle = this.type.color;
-            ctx.textAlign = "center";
-            ctx.fillText(this.type.simbol, this.x, this.y + 6);
-        }
     }
 }

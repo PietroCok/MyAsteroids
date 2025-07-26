@@ -172,7 +172,7 @@ class Game {
         this.asteroids = [];
 
         this.explosions = [];
-        this.pickUps = [];
+        this.powerups = [];
         this.resize();
 
         if (start) {
@@ -210,11 +210,18 @@ class Game {
         this.level++;
         this.asteroidsNumber = 4 + this.level * 2;
         this.addAsteroid();
-        this.spawnPickUp();
+        this.spawnPowerUp();
     }
 
-    spawnPickUp() {
-        this.pickUps.push(new PickUp(this));
+    spawnPowerUp() {
+        this.powerups.push(new PowerUp(this));
+    }
+
+    slowDownAsteroids(time = 5){
+        this.slowAsteroids = true;
+        setTimeout(() => {
+            this.slowAsteroids = false;
+        }, time*1000);
     }
 
     update() {
@@ -272,24 +279,24 @@ class Game {
         }
 
         if (this.player) {
-            // pickups
-            for (let i = this.pickUps.length - 1; i >= 0; i--) {
-                let pickUp = this.pickUps[i];
-                pickUp.update();
+            // powerups
+            for (let i = this.powerups.length - 1; i >= 0; i--) {
+                let powerup = this.powerups[i];
+                powerup.update();
 
                 // remove if expired
-                if (pickUp.TTL <= 0) {
-                    this.pickUps.splice(i, 1);
+                if (powerup.TTL <= 0) {
+                    this.powerups.splice(i, 1);
                 }
 
                 // collision with player
                 // use size as circle to check intersection
-                let distX = pickUp.x - this.player.shapeObj.centerX;
-                let distY = pickUp.y - this.player.shapeObj.centerY;
-                let distR = pickUp.size / 2 + this.player.shapeObj.size / 2;
+                let distX = powerup.x - this.player.shapeObj.centerX;
+                let distY = powerup.y - this.player.shapeObj.centerY;
+                let distR = powerup.size / 2 + this.player.shapeObj.size / 2;
                 if (distX * distX + distY * distY < distR * distR) {
-                    this.player.pickUp(pickUp.type);
-                    this.pickUps.splice(i, 1);
+                    this.player.powerUp(powerup.type);
+                    this.powerups.splice(i, 1);
                 }
             }
 
@@ -298,10 +305,14 @@ class Game {
         }
 
         // asteroids update
+        const effects = [];
+        if(this.slowAsteroids){
+            effects.push({type: 'slowdown'});
+        }
         if (this.asteroids.length > 0) {
             for (let i = this.asteroids.length - 1; i >= 0; i--) {
                 if (this.asteroids[i])
-                    this.asteroids[i].update();
+                    this.asteroids[i].update(effects);
 
                 if (!this.running) {
                     break;
@@ -327,8 +338,8 @@ class Game {
         this.ctx.fillStyle = 'black';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        for (let pickUp of this.pickUps) {
-            pickUp.draw(this.ctx);
+        for (let powerup of this.powerups) {
+            powerup.draw(this.ctx);
         }
 
         if (this.player) {

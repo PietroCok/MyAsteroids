@@ -29,8 +29,15 @@ class Asteroid {
             this.points.push({ x: this.points[i].x + this.size / 2 * Math.cos(angle), y: this.points[i].y + this.size / 2 * Math.sin(angle) });
         }
     }
-    update() {
-        this.shapeObj.update(this.aSpeed, this.speedX, this.speedY);
+    update(effects) {
+        let speedModifier = 1
+        for(const effect of effects){
+            if(effect.type == 'slowdown'){
+                speedModifier /= 3;
+            }
+        }
+
+        this.shapeObj.update(this.aSpeed * speedModifier, this.speedX * speedModifier, this.speedY * speedModifier);
 
         // collision with ship
         if (this.game.player && !this.game.player.immune) {
