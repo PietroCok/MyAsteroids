@@ -81,7 +81,7 @@ class PowerUp {
         }
         
         this.deltaT = 0;
-        this.TTL_start = Math.round(Math.random() * 5 + 20);
+        this.TTL_start = Math.round(Math.random() * 5 + 30);
         this.TTL = this.TTL_start;
 
         this.on = true;
@@ -129,6 +129,15 @@ class PowerUp {
             
             if (img) {
                 ctx.drawImage(img, this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+
+                // draw arc to show time left
+                const percLeft = this.TTL / this.TTL_start;
+
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = this.type.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 15, 0, 2 * Math.PI * percLeft);
+                ctx.stroke();
             }
         }
     }
