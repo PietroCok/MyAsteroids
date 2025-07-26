@@ -27,7 +27,7 @@ class SimpleExplosion extends Explosion {
         this.particles = [];
 
         for (let i = 0; i < this.n; i++) {
-            this.particles.push({
+            const particle = {
                 x: this.x,
                 y: this.y,
                 speedX: (Math.random() * 4) * (Math.random() >= 0.5 ? 1 : -1),
@@ -38,7 +38,12 @@ class SimpleExplosion extends Explosion {
                     blue: Math.random() * 255,
                     opacity: 1
                 }
-            });
+            }
+            // normalized speed
+            const length = Math.sqrt(particle.speedX * particle.speedX + particle.speedY * particle.speedY);
+            particle.speedX = particle.speedX / length;
+            particle.speedY = particle.speedY / length;
+            this.particles.push(particle);
         }
     }
     update() {
