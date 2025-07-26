@@ -193,10 +193,6 @@ class Game {
         this.asteroids = [];
         this.addAsteroid();
 
-        if (!this.menu.settings.FPS.value) {
-            document.getElementById('fps-counter').classList.add('hidden');
-        }
-
         this.oldT = performance.now();
         this.buffer = [];
         this.deltaT = 0;
@@ -211,6 +207,8 @@ class Game {
     increaseDifficulty() {
         this.level++;
         this.asteroidsNumber = 4 + this.level * 2;
+        const waveCounter = document.querySelector('#wave-counter .value');
+        if(waveCounter) waveCounter.textContent = this.level;
         this.addAsteroid();
         this.spawnPowerUp();
     }
@@ -236,48 +234,6 @@ class Game {
         if (this.deltaT >= 60) {
             this.deltaT = 0;
             this.time++;
-        }
-
-
-        if (this.menu.settings.FPS.value) {
-            let time = performance.now();
-            let updTime = time - this.oldT;
-            this.buffer.push(updTime);
-            while (this.buffer.length > 10) {
-                this.buffer.splice(0, 1);
-            }
-            this.oldT = time;
-            if (this.deltaT % 30 == 0) {
-                // update fps counter
-                let fps = 0;
-                for (let t of this.buffer) {
-                    fps += t;
-                }
-                fps /= 10;
-                fps = Math.round(1 / fps * 1000)
-                document.getElementById('fps-counter').textContent = fps;
-
-
-                // update player speed
-                let speedOmeter = document.getElementById('speed');
-                if (!speedOmeter) {
-                    speedOmeter = document.createElement('div')
-                    speedOmeter.classList.add('speedOmeter');
-                    document.body.appendChild(speedOmeter);
-                }
-                speedOmeter.id = 'speed';
-
-                if (this.player) {
-                    let player = this.player;
-                    let speedX = player.speedX,
-                        speedY = player.speedY;
-                    console.log(player);
-                    speedOmeter.textContent = speedX.toFixed(2) + "\n" + speedY.toFixed(2);
-                }
-            }
-            document.getElementById('fps-counter').classList.remove('hidden');
-        } else {
-            document.getElementById('fps-counter').classList.add('hidden');
         }
 
         if (this.player) {

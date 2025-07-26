@@ -52,7 +52,6 @@ class Menu {
         this.settings_container.classList.add('settings', 'page');
 
         this.settings = {
-            FPS: new Setting(this.game, this, 'FPS', 'checkbox', false),
         };
 
         for (let setting of Object.values(this.settings)) {
