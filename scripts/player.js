@@ -193,23 +193,24 @@ class Player {
                     this.game.increaseScore(10);
 
                     const shinkFactor = 0.6;
-                    if (ast.shapeObj.size * shinkFactor > this.game.asteroidsMinSize) {
-                        // split asteroid when destroyed
-                        this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY));
-                        this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY));
+                    if (ast.hp > 1) {
+                        ast.hp--;
                     } else {
-                        new SimpleExplosion(this.game, ast.shapeObj.centerX, ast.shapeObj.centerY);
-
-                        //this.game.asteroidsNumber++;
-                        //this.game.addAsteroid();
+                        if (ast.shapeObj.size * shinkFactor > this.game.asteroidsMinSize) {
+                            // split asteroid when destroyed
+                            this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY, ast.maxHp - 1));
+                            this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY, ast.maxHp - 1));
+                        } else {
+                            new SimpleExplosion(this.game, ast.shapeObj.centerX, ast.shapeObj.centerY);
+                        }
+                        // remove destroyed asteroid
+                        this.game.asteroids.splice(j, 1);
                     }
-                    this.game.asteroids.splice(j, 1);
 
                     // new level
                     if (this.game.asteroids.length <= 0) {
                         this.game.increaseDifficulty();
                     }
-
 
                     return;
                 }
@@ -223,7 +224,7 @@ class Player {
 
         this.shapeObj.draw(ctx);
 
-        if(this.immune){
+        if (this.immune) {
             // shield
             ctx.strokeStyle = 'lightblue';
             ctx.lineWidth = 4;

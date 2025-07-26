@@ -151,7 +151,7 @@ class Shape {
 
     }
 
-    draw(ctx) {
+    draw(ctx, {lineWidth, fill, fillStyle} = {}) {
         ctx.beginPath();
         ctx.moveTo(this.shape[0].x, this.shape[0].y)
         for (let i = 1; i < this.shape.length; i++) {
@@ -159,8 +159,12 @@ class Shape {
         }
         ctx.closePath();
         ctx.strokeStyle = this.color;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = lineWidth || 2;
         ctx.stroke();
+        if(fill){
+            ctx.fillStyle = fillStyle || this.color;
+            ctx.fill();
+        }
 
         if (DEBUG) {
             // obj center point
@@ -217,7 +221,6 @@ function scaleShape(points, scale) {
     return points;
 }
 
-
 // check collision with SAT
 function collisionCheckSAT(shapeA, shapeB) {
     // find axis for test
@@ -251,7 +254,6 @@ function collisionCheckSAT(shapeA, shapeB) {
     // collision found
     return true;
 }
-
 
 function isMobileDevice() {
     return window.matchMedia("(pointer: coarse)").matches;

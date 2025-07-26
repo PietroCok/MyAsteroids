@@ -1,5 +1,5 @@
 class Asteroid {
-    constructor(game, size, x, y) {
+    constructor(game, size, x, y, hp = -1) {
         this.game = game;
 
         this.x = x || Math.random() * this.game.canvas.width;
@@ -12,6 +12,13 @@ class Asteroid {
         this.speedY = (Math.random() > 0.5 ? 1 : -1) * 1 / this.size * 25 * (Math.random() + 0.5);
         this.speedX = (Math.random() > 0.5 ? 1 : -1) * 1 / this.size * 25 * (Math.random() + 0.5);
         this.aSpeed = Math.random() * 6 * 0.005;
+
+        if(hp == undefined){
+            this.maxHp = Math.min(this.game.level * 0.2, 5);
+        } else {
+            this.maxHp = Math.min(Math.max(hp, 1), 5);
+        }
+        this.hp = this.maxHp;
 
         this.points = [];
         this.generate();
@@ -43,12 +50,13 @@ class Asteroid {
         if (this.game.player && !this.game.player.immune) {
             if (collisionCheckSAT(this.shapeObj, this.game.player.shapeObj)) {
                 this.game.player.hit();
-                //this.game.stop();
                 return;
             }
         }
     }
     draw(ctx) {
-        this.shapeObj.draw(ctx);
+        this.shapeObj.draw(ctx, {
+            lineWidth: 2 * this.hp
+        });
     }
 }
