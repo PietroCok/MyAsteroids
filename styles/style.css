@@ -134,7 +134,7 @@ section {
   cursor: pointer;
 }
 
-.btn:hover{
+.btn:active{
   background-color: rgb(57, 56, 56);
 }
 
@@ -221,7 +221,7 @@ section {
   justify-content: center;
 }
 
-.touch-control:hover{
+.touch-control:active{
   background-color: #ffffff16;
 }
 
