@@ -251,3 +251,8 @@ function collisionCheckSAT(shapeA, shapeB) {
     // collision found
     return true;
 }
+
+
+function isMobileDevice() {
+    return window.matchMedia("(pointer: coarse)").matches;
+}
