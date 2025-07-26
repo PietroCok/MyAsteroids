@@ -91,7 +91,7 @@ class MissileExplosion extends Explosion {
             this.radius++;
         }
 
-        if (this.radius == this.maxRadius) {
+        if (this.radius >= this.maxRadius) {
             this.end = true;
         }
 
