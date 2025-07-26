@@ -31,10 +31,17 @@
   <section>
     <canvas id="board"></canvas>
 
-    <div class="messages">
+    <div id="messages">
       <div class="pick-up color-green" id="fire-rate">Firerate +20%</div>
       <div class="pick-up color-red" id="hp-up">Hp +1</div>
       <div class="pick-up color-red" id="hp-down">Hp -1</div>
+    </div>
+
+    <div id="touch-controls-container">
+      <div id="touch-up" class="touch-control simple-arrow hidden"></div>
+      <div id="touch-left" class="touch-control simple-arrow rotate-270 hidden"></div>
+      <div id="touch-down" class="touch-control simple-arrow rotate-180 hidden"></div>
+      <div id="touch-right" class="touch-control simple-arrow rotate-90 hidden"></div>
     </div>
 
     <div id="menu" class="hidden">

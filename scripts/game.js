@@ -14,15 +14,27 @@ class Game {
         }
 
         this.inputBuffer = [];
+
+        if (isMobileDevice()) {
+            this.touchInputSetup();
+        } else {
+            this.mkInputSetup();
+        }
+
+        this.requestId = window.requestAnimationFrame(this.update.bind(this));
+        this.running = true;
+    }
+
+    mkInputSetup() {
         // input manager
         window.addEventListener('keydown', (event) => {
             if (this.inputBuffer.indexOf(event.key) == -1) {
                 this.inputBuffer.push(event.key);
-                //console.log(this.inputBuffer);
+                console.log(this.inputBuffer);
             }
 
             if (event.key == 'Escape') {
-                if(this.player){
+                if (this.player) {
                     if (this.running) {
                         this.stop();
                         this.menu.open('Resume');
@@ -37,7 +49,6 @@ class Game {
                     }
                     // do nothing if game is not started (= player not present)
                 }
-                
             }
         });
 
@@ -47,9 +58,46 @@ class Game {
                 //console.log(this.inputBuffer);
             }
         });
+    }
 
-        this.requestId = window.requestAnimationFrame(this.update.bind(this));
-        this.running = true;
+    touchInputSetup() {
+        this.touchInputs = [
+            {
+                elem: document.getElementById('touch-up'),
+                value: 'w'
+            },
+            {
+                elem: document.getElementById('touch-down'),
+                value: 's'
+            },
+            {
+                elem: document.getElementById('touch-left'),
+                value: 'a'
+            },
+            {
+                elem: document.getElementById('touch-right'),
+                value: 'd'
+            }
+        ]
+
+        window.addEventListener('touchstart', (event) => {
+            const selectedInput = this.touchInputs.find(i => i.elem == event.target)
+            if(!selectedInput) return;
+            if (this.inputBuffer.indexOf(selectedInput.value) < 0){
+                this.inputBuffer.push(selectedInput.value);
+            }
+        })
+
+        window.addEventListener('touchend', (event) => {
+            const selectedInput = this.touchInputs.find(i => i.elem == event.target)
+            if(!selectedInput) return;
+            if (this.inputBuffer.indexOf(selectedInput.value) > -1){
+                this.inputBuffer.splice(this.inputBuffer.indexOf(selectedInput.value), 1);
+            }
+        })
+
+        // always shooting 
+        this.inputBuffer.push(' ')
     }
 
     endGame() {
@@ -58,6 +106,9 @@ class Game {
     }
 
     stop() {
+        if (this.touchInputs) {
+            this.touchInputs.forEach(t => t.elem.classList.add('hidden'));
+        }
         if (!this.running && this.requestId == null) {
             console.log('Already stopped!')
             return;
@@ -127,6 +178,9 @@ class Game {
         this.resize();
 
         if (start) {
+            if (this.touchInputs) {
+                this.touchInputs.forEach(t => t.elem.classList.remove('hidden'));
+            }
             this.player = new Player(this);
 
             // draw hp
@@ -161,7 +215,7 @@ class Game {
         this.spawnPickUp();
     }
 
-    spawnPickUp(){
+    spawnPickUp() {
         this.pickUps.push(new PickUp(this));
     }
 

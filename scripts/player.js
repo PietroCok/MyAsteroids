@@ -28,7 +28,7 @@ class Player {
         this.lastBullet = 0;
 
         this.hp = 3;
-        this.maxHp = 10;
+        this.maxHp = 5;
         this.immune = false;
         this.immuneTime = 3;
         this.immuneTimeLeft = 0;
@@ -77,11 +77,11 @@ class Player {
 
         // show message
         const element = document.getElementById(pickup.id);
-        if(element && !element.classList.contains('animate')){
-            element.classList.add('animate');            
+        if (element && !element.classList.contains('animate')) {
+            element.classList.add('animate');
             setTimeout(() => {
                 element.classList.remove('animate');
-            }, 5*1000);     
+            }, 5 * 1000);
         }
     }
 
@@ -101,6 +101,7 @@ class Player {
         this.accX = 0;
         this.accY = 0;
         for (let input of inputs) {
+            // mouse and keyboard
             switch (input) {
                 case 'w':
                     // forward
@@ -256,7 +257,7 @@ class PickUp {
                 simbol: 'F',
                 color: 'lime'
             },
-            { 
+            {
                 id: 'hp-up',
                 text: 'hp',
                 simbol: 'H',
@@ -264,9 +265,12 @@ class PickUp {
             }
         ]
 
-        this.type = this.types[Math.floor(Math.random() * this.types.length)];
-        // increase/decrease on relative type
-        //this.increase = Math.random() > 0.5 ? true : false;
+        let availableTypes = this.types;
+        if(this.game.Player?.hp == this.game.Player?.maxHp){
+            availableTypes = availableTypes.filter(t => t.id != 'hp-up')
+        }
+
+        this.type = availableTypes[Math.floor(Math.random() * availableTypes.length)];
         this.deltaT = 0;
         this.TTL_start = Math.round(Math.random() * 5 + 20);
         this.TTL = this.TTL_start;
