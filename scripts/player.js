@@ -22,7 +22,7 @@ class Player {
         this.aAcc = 0.05;
 
         this.fireRate = 1; //projectile/sec
-        this.maxFireRate = 10; //projectile/sec
+        this.maxFireRate = 5; //projectile/sec
         this.deltaT = 0;
 
         this.bullets = [];
@@ -288,6 +288,10 @@ class PickUp {
             availableTypes = availableTypes.filter(t => t.id != 'fire-rate')
         }
 
+        if(availableTypes.length == 0){
+            return;
+        }
+
         this.type = availableTypes[Math.floor(Math.random() * availableTypes.length)];
         this.deltaT = 0;
         this.TTL_start = Math.round(Math.random() * 5 + 20);
@@ -300,6 +304,10 @@ class PickUp {
         if (this.deltaT >= 60) {
             this.deltaT = 0;
             this.TTL--;
+        }
+
+        if(this.TTL <= 0){
+            delete this;
         }
     }
     draw(ctx) {
