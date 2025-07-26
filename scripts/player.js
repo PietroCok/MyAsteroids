@@ -188,19 +188,16 @@ class Player {
                     this.game.increaseScore(10);
 
                     const shinkFactor = 0.6;
-                    if (ast.hp > 1) {
-                        ast.hp--;
+
+                    if (ast.shapeObj.size * shinkFactor > this.game.asteroidsMinSize) {
+                        // split asteroid when destroyed
+                        this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY));
+                        this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY));
                     } else {
-                        if (ast.shapeObj.size * shinkFactor > this.game.asteroidsMinSize) {
-                            // split asteroid when destroyed
-                            this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY, ast.maxHp - 2));
-                            this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY, ast.maxHp - 2));
-                        } else {
-                            new SimpleExplosion(this.game, ast.shapeObj.centerX, ast.shapeObj.centerY);
-                        }
-                        // remove destroyed asteroid
-                        this.game.asteroids.splice(j, 1);
+                        new SimpleExplosion(this.game, ast.shapeObj.centerX, ast.shapeObj.centerY);
                     }
+                    // remove destroyed asteroid
+                    this.game.asteroids.splice(j, 1);
 
                     // new level
                     if (this.game.asteroids.length <= 0) {
