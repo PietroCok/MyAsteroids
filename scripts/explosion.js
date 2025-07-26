@@ -40,9 +40,9 @@ class SimpleExplosion extends Explosion {
                 }
             }
             // normalized speed
-            const length = Math.sqrt(particle.speedX * particle.speedX + particle.speedY * particle.speedY);
-            particle.speedX = particle.speedX / length;
-            particle.speedY = particle.speedY / length;
+            const speed = Math.sqrt(particle.speedX * particle.speedX + particle.speedY * particle.speedY);
+            particle.speedX = particle.speedX / speed;
+            particle.speedY = particle.speedY / speed;
             this.particles.push(particle);
         }
     }
