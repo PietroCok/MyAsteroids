@@ -32,7 +32,7 @@ class PowerUp {
         this.types = [
             {
                 id: 'fire-rate',
-                message: 'Firerate +20%',
+                message: 'Firerate up (20%)',
                 color: 'lime'
             },
             {
@@ -42,7 +42,7 @@ class PowerUp {
             },
             {
                 id: 'shield',
-                message: 'Shield',
+                message: 'Shield (20s)',
                 color: 'cyan'
             },
             {
