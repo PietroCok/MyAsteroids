@@ -22,6 +22,7 @@ class Player {
         this.aAcc = 0.05;
 
         this.fireRate = 1; //projectile/sec
+        this.maxFireRate = 10; //projectile/sec
         this.deltaT = 0;
 
         this.bullets = [];
@@ -77,6 +78,9 @@ class Player {
         switch (pickup.text) {
             case 'fireRate':
                 this.fireRate *= 1.2;
+                if(this.fireRate > this.maxFireRate){
+                    this.fireRate = this.maxFireRate;
+                }
                 break;
             case 'hp':
                 this.hp = (this.hp + 1) % this.maxHp == 0 ? this.maxHp : this.hp + 1;
@@ -275,8 +279,13 @@ class PickUp {
         ]
 
         let availableTypes = this.types;
-        if (this.game.Player?.hp == this.game.Player?.maxHp) {
+        // remove hp up from pool when player has max hp
+        if (this.game.player?.hp >= this.game.player?.maxHp) {
             availableTypes = availableTypes.filter(t => t.id != 'hp-up')
+        }
+        // remove firerate up from pool when player has reached max firerate
+        if (this.game.player?.fireRate >= this.game.player?.maxFireRate) {
+            availableTypes = availableTypes.filter(t => t.id != 'fire-rate')
         }
 
         this.type = availableTypes[Math.floor(Math.random() * availableTypes.length)];

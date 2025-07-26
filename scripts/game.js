@@ -30,7 +30,6 @@ class Game {
         window.addEventListener('keydown', (event) => {
             if (this.inputBuffer.indexOf(event.key) == -1) {
                 this.inputBuffer.push(event.key);
-                console.log(this.inputBuffer);
             }
 
             if (event.key == 'Escape') {
@@ -55,7 +54,6 @@ class Game {
         window.addEventListener('keyup', (event) => {
             if (this.inputBuffer.indexOf(event.key) != -1) {
                 this.inputBuffer.splice(this.inputBuffer.indexOf(event.key), 1);
-                //console.log(this.inputBuffer);
             }
         });
     }
