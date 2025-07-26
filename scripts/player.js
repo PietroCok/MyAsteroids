@@ -54,6 +54,15 @@ class Player {
         this.hp--;
         this.immunity();
         this.game.updateLifePoints();
+
+        // show message
+        const element = document.getElementById('hp-down');
+        if (element && !element.classList.contains('animate')) {
+            element.classList.add('animate');
+            setTimeout(() => {
+                element.classList.remove('animate');
+            }, 5 * 1000);
+        }
     }
 
     immunity(time) {
@@ -266,7 +275,7 @@ class PickUp {
         ]
 
         let availableTypes = this.types;
-        if(this.game.Player?.hp == this.game.Player?.maxHp){
+        if (this.game.Player?.hp == this.game.Player?.maxHp) {
             availableTypes = availableTypes.filter(t => t.id != 'hp-up')
         }
 
