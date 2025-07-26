@@ -23,6 +23,8 @@ class Game {
 
         this.requestId = window.requestAnimationFrame(this.update.bind(this));
         this.running = true;
+
+        PowerUp.loadImages();
     }
 
     mkInputSetup() {
@@ -213,8 +215,8 @@ class Game {
         this.spawnPowerUp();
     }
 
-    spawnPowerUp() {
-        this.powerups.push(new PowerUp(this));
+    spawnPowerUp(forceType = null) {
+        this.powerups.push(new PowerUp(this, forceType));
     }
 
     slowDownAsteroids(time = 5){
