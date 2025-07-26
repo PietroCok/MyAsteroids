@@ -66,20 +66,19 @@ class Player {
         }
     }
 
-    immunity(time, blink = true) {
+    immunity(time,) {
         if (time) {
             this.immuneTime = time;
         }
         this.immuneTimeLeft = this.immuneTime;
         this.immune = true;
-        this.blinking = blink;
     }
 
     powerUp(powerup) {
         switch (powerup.text) {
             case 'fireRate':
                 this.fireRate *= 1.2;
-                if(this.fireRate > this.maxFireRate){
+                if (this.fireRate > this.maxFireRate) {
                     this.fireRate = this.maxFireRate;
                 }
                 break;
@@ -222,32 +221,22 @@ class Player {
         // draw smoke (first so it goes under)
         this.thruster.draw(ctx);
 
-        // if player immune blink (faster as time left decrease)
-        if (this.immune) {
-            // half second on, half second off
-            if(this.blinking){
-                let blinkTime = 6 - this.immuneTimeLeft; // state change/second
-                if (this.deltaT % (60 / blinkTime) == 0) {
-                    this.on = !this.on;
-                }
-            }
-            if (this.on) {
-                this.shapeObj.draw(ctx);
-            }
+        this.shapeObj.draw(ctx);
 
+        if(this.immune){
             // shield
             ctx.strokeStyle = 'lightblue';
-            ctx.lineWidth = 3;
-            ctx.globalAlpha = (this.immuneTimeLeft + 1) / this.immuneTime;
+            ctx.lineWidth = 4;
+            let alphaTime = Math.max((this.immuneTimeLeft) / this.immuneTime, .3);
+            ctx.globalAlpha = alphaTime;
             ctx.beginPath();
             ctx.arc(this.shapeObj.centerX, this.shapeObj.centerY, this.shapeObj.size * 1.2, 0, 2 * Math.PI);
             ctx.stroke();
-            ctx.lineWidth = 2,
+            ctx.lineWidth = 2;
             ctx.globalAlpha = 1;
-
-        } else {
-            this.shapeObj.draw(ctx);
         }
+
+        this.shapeObj.draw(ctx);
 
         if (DEBUG) {
             ctx.strokeStyle = 'blue';
@@ -260,7 +249,6 @@ class Player {
         for (let bullet of this.bullets) {
             bullet.draw(ctx);
         }
-
 
     }
 }
