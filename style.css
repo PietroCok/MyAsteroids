@@ -7,6 +7,7 @@
 body{
   /* overflow: hidden; */
   user-select: none;
+  color: white;
 }
 
 
@@ -14,21 +15,21 @@ header{
   /* position: absolute; */
   width: 100%;
   border-bottom: 1px solid white;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   background-color: black;
   height: 25px;
 }
 
 #life-points{
-  /* position: absolute; */
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 25px;
   color: white;
-  display: flex;
   margin: 0 10px;
+
+  display: flex;
+  align-items: center;
   gap: 0.8rem;
-  flex: 1;
 }
 
 .hp{
@@ -57,24 +58,25 @@ header{
   }
 }
 
-#fps-counter{
-  z-index: 1000;
-  color: white;
-  background-color: black;
-  border: 1px solid lime;
-  padding: 2px 3px;
-}
-
 #score{
+  position: absolute;
+  right: 0;
+  top: 0;
   z-index: 1000;
   color: white;
   background-color: black;
-  /* border: 1px solid lime; */
   padding: 2px 3px;
 }
 
 #score > .value{
   min-width: 2ch;
+}
+
+#wave-counter{
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 section {
@@ -217,6 +219,10 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.touch-control:hover{
+  background-color: #ffffff16;
 }
 
 .simple-arrow::after{
