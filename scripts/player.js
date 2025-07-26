@@ -90,7 +90,7 @@ class Player {
                 this.immunity(20, false);
                 break;
             case 'nuke':
-                new MissileExplosion(this.game, this.shapeObj.centerX, this.shapeObj.centerY, 200, 100);
+                new MissileExplosion(this.game, this.shapeObj.centerX, this.shapeObj.centerY, (this.game.canvas.width + this.game.canvas.height)/5, 100);
                 break;
             case 'slow':
                 this.game.slowDownAsteroids(10);
