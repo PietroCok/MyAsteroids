@@ -31,7 +31,8 @@ class Player {
         this.hp = 3;
         this.maxHp = 5;
         this.immune = false;
-        this.immuneTime = 3;
+        this.defaultImmuneTime = 3;
+        this.immuneTime = this.defaultImmuneTime;
         this.immuneTimeLeft = 0;
         this.on = true;
 
@@ -63,10 +64,8 @@ class Player {
         })
     }
 
-    immunity(time,) {
-        if (time) {
-            this.immuneTime = time;
-        }
+    immunity(time = this.defaultImmuneTime) {
+        this.immuneTime = time;
         this.immuneTimeLeft = this.immuneTime;
         this.immune = true;
     }

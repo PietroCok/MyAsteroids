@@ -167,6 +167,7 @@ class Game {
     reset(start) {
         this.score = 0;
         document.querySelector('#score > .value').textContent = this.score;
+        document.querySelector('#wave-counter > .value').textContent = "1";
         this.safeRadius = 150;
 
         this.level = 0;
@@ -208,7 +209,7 @@ class Game {
         this.level++;
         this.asteroidsNumber = 4 + this.level * 2;
         const waveCounter = document.querySelector('#wave-counter .value');
-        if(waveCounter) waveCounter.textContent = this.level;
+        if(waveCounter) waveCounter.textContent = this.level + 1;
         this.addAsteroid();
         this.spawnPowerUp();
     }
