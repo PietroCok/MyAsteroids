@@ -258,3 +258,15 @@ function collisionCheckSAT(shapeA, shapeB) {
 function isMobileDevice() {
     return window.matchMedia("(pointer: coarse)").matches;
 }
+
+/**
+ * Converts a string to an HTML elem
+ * 
+ * @param {String} string - string representation of a **SINGLE** HTML element
+ * @returns HTML element
+ */
+function convertToHTML(string) {
+  const _tmp = document.createElement("div");
+  _tmp.innerHTML = string;
+  return _tmp.firstChild;
+}

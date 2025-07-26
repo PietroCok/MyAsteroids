@@ -7,8 +7,10 @@
   <title>Asteroids</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./styles/style.css">
+  <link rel="stylesheet" href="./styles/toast.css">
   <!-- SCRIPTS -->
+  <script src="./scripts/toastManager.js" defer></script>
   <script src="scripts/menu.js" defer></script>
   <script src="scripts/game.js" defer></script>
   <script src="scripts/player.js" defer></script>
@@ -30,17 +32,10 @@
     <div id="score">Score <span class="value"></span></div>
   </header>
 
+  <div id="toast-container"></div>
+
   <section>
     <canvas id="board"></canvas>
-
-    <div id="messages">
-      <div class="pick-up color-green" id="fire-rate">Firerate +20%</div>
-      <div class="pick-up color-red" id="hp-up">Hp +1</div>
-      <div class="pick-up color-red" id="hp-down">Hp -1</div>
-      <div class="pick-up color-cyan" id="shield">Shield</div>
-      <div class="pick-up color-orange" id="nuke">Nuke</div>
-      <div class="pick-up color-purple" id="slow">Slowdown</div>
-    </div>
 
     <div id="touch-controls-container">
       <div id="touch-up" class="touch-control simple-arrow hidden"></div>

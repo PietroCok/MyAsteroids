@@ -56,14 +56,11 @@ class Player {
         this.immunity();
         this.game.updateLifePoints();
 
-        // show message
-        const element = document.getElementById('hp-down');
-        if (element && !element.classList.contains('animate')) {
-            element.classList.add('animate');
-            setTimeout(() => {
-                element.classList.remove('animate');
-            }, 5 * 1000);
-        }
+        new Notification({
+            message: 'Hp down',
+            displayTime: 3,
+            color: 'red'
+        })
     }
 
     immunity(time,) {
@@ -75,14 +72,14 @@ class Player {
     }
 
     powerUp(powerup) {
-        switch (powerup.text) {
-            case 'fireRate':
+        switch (powerup.id) {
+            case 'fire-rate':
                 this.fireRate *= 1.2;
                 if (this.fireRate > this.maxFireRate) {
                     this.fireRate = this.maxFireRate;
                 }
                 break;
-            case 'hp':
+            case 'hp-up':
                 this.hp = (this.hp + 1) % this.maxHp == 0 ? this.maxHp : this.hp + 1;
                 this.game.updateLifePoints();
                 break;
@@ -98,13 +95,11 @@ class Player {
         }
 
         // show message
-        const element = document.getElementById(powerup.id);
-        if (element && !element.classList.contains('animate')) {
-            element.classList.add('animate');
-            setTimeout(() => {
-                element.classList.remove('animate');
-            }, 5 * 1000);
-        }
+        new Notification({
+            message: powerup.message,
+            displayTime: 3,
+            color: powerup.color
+        })
     }
 
     update() {

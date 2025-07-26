@@ -32,32 +32,27 @@ class PowerUp {
         this.types = [
             {
                 id: 'fire-rate',
-                text: 'fireRate',
-                simbol: 'F',
+                message: 'Firerate +20%',
                 color: 'lime'
             },
             {
                 id: 'hp-up',
-                text: 'hp',
-                simbol: 'H',
+                message: 'Hp up',
                 color: 'red'
             },
             {
                 id: 'shield',
-                text: 'shield',
-                simbol: 'S',
+                message: 'Shield',
                 color: 'cyan'
             },
             {
                 id: 'nuke',
-                text: 'nuke',
-                simbol: 'N',
+                message: 'Nuke',
                 color: 'orange'
             },
             {
                 id: 'slow',
-                text: 'slow',
-                simbol: 'D',
+                message: 'Slowdown',
                 color: 'purple'
             }
         ]

@@ -1,0 +1,74 @@
+.toast-red{
+  color: red;
+  border-color: red;
+  box-shadow: 0 0 5px 0 red;
+}
+
+.toast-lime{
+  color: lime;
+  border-color: lime;
+  box-shadow: 0 0 5px 0 lime;
+}
+
+.toast-orange{
+  color: orange;
+  border-color: orange;
+  box-shadow: 0 0 5px 0 orange;
+}
+
+.toast-purple{
+  color: purple;
+  border-color: purple;
+  box-shadow: 0 0 5px 0 purple;
+}
+
+.toast-cyan{
+  color: cyan;
+  border-color: cyan;
+  box-shadow: 0 0 5px 0 cyan;
+}
+
+#toast-container{
+  display: flex;
+  position: fixed;
+  top: 40%;
+  z-index: 100;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.notification{
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  background-color: black;
+  width: fit-content;
+  text-align: center;
+  margin: 1rem;
+  display: flex;
+  align-items: center;
+
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 300ms ease-out;
+}
+
+.notification-message{
+  flex: 1;
+  padding: 1rem;
+}
+
+.anim-in{
+  opacity: 1;
+  transform: translateY(10px);
+}
+
+.anim-out{
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+
