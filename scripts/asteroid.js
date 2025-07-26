@@ -1,5 +1,5 @@
 class Asteroid {
-    constructor(game, size, x, y, hp = -1) {
+    constructor(game, size, x, y, hp) {
         this.game = game;
 
         this.x = x || Math.random() * this.game.canvas.width;
@@ -14,11 +14,12 @@ class Asteroid {
         this.aSpeed = Math.random() * 6 * 0.005;
 
         if(hp == undefined){
-            this.maxHp = Math.min(this.game.level * 0.2, 5);
+            this.maxHp = Math.min(1 + this.game.level * 0.2, 5);
         } else {
             this.maxHp = Math.min(Math.max(hp, 1), 5);
         }
         this.hp = this.maxHp;
+        console.log(this.hp);
 
         this.points = [];
         this.generate();
@@ -56,7 +57,7 @@ class Asteroid {
     }
     draw(ctx) {
         this.shapeObj.draw(ctx, {
-            lineWidth: 2 * this.hp
+            lineWidth: 2 * Math.floor(this.hp)
         });
     }
 }

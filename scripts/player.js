@@ -193,8 +193,8 @@ class Player {
                     } else {
                         if (ast.shapeObj.size * shinkFactor > this.game.asteroidsMinSize) {
                             // split asteroid when destroyed
-                            this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY, ast.maxHp - 1));
-                            this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY, ast.maxHp - 1));
+                            this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY, ast.maxHp - 2));
+                            this.game.asteroids.push(new Asteroid(this.game, ast.shapeObj.size * shinkFactor, ast.shapeObj.centerX, ast.shapeObj.centerY, ast.maxHp - 2));
                         } else {
                             new SimpleExplosion(this.game, ast.shapeObj.centerX, ast.shapeObj.centerY);
                         }
