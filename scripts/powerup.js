@@ -1,23 +1,23 @@
 class PowerUp {
     static images = {
         'fire-rate': {
-            'path': '../assets/bullets.svg',
+            'path': './assets/bullets.svg',
             'img': null
         },
         'hp-up': {
-            'path': '../assets/heart.svg',
+            'path': './assets/heart.svg',
             'img': null
         },
         'shield': {
-            'path': '../assets/shield.svg',
+            'path': './assets/shield.svg',
             'img': null
         },
         'nuke': {
-            'path': '../assets/nuke.svg',
+            'path': './assets/nuke.svg',
             'img': null
         },
         'slow': {
-            'path': '../assets/clock.svg',
+            'path': './assets/clock.svg',
             'img': null
         },
     }
@@ -88,8 +88,6 @@ class PowerUp {
     }
 
     static loadImages() {
-        console.log('Loading powerup images');
-
         for (const image of Object.values(PowerUp.images)) {
             this.loadImage(image);
         }
