@@ -19,7 +19,6 @@ class Asteroid {
             this.maxHp = Math.min(Math.max(hp, 1), 5);
         }
         this.hp = this.maxHp;
-        console.log(this.hp);
 
         this.points = [];
         this.generate();
